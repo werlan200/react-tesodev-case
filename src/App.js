@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
+import Home from "./pages/Home";
+import ResultsPage from "./pages/ResultsPage";
+import Error from "./pages/Error";
+import { useGlobalContext } from "./context";
 function App() {
+  const { redirect } = useGlobalContext();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <main className="main">
+        <Switch>
+          <Route exact path="/">
+            {redirect ? <Redirect to="/results" /> : <Home />}
+          </Route>
+          <Route exact path="/results">
+            <ResultsPage />
+          </Route>
+          <Route exact path="*">
+            <Error />
+          </Route>
+        </Switch>
+      </main>
+    </Router>
   );
 }
 
